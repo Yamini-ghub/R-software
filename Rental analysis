@@ -1,0 +1,147 @@
+setwd("C:/Users/ACER/Desktop/R class/assignment 2")
+
+all_cities_data <- read.csv("All_Cities_Data.csv")
+
+install.packages("robustbase")
+library(robustbase)
+
+names(all_cities_data)
+str(all_cities_data)
+dim(all_cities_data)
+
+# Selecting Columns and types of variable
+
+rent.df <- subset(all_cities_data, select = c(price, 
+                                              bedroom, bathroom, area, city))
+str(rent.df)
+
+# Convert 'city' to a factor for one hot encoding
+rent.df$city <- as.numeric(as.factor(rent.df$city))
+str(rent.df)
+
+#Descriptive statistics of variables
+
+summary(rent.df$price)
+summary(rent.df$bedroom)
+summary(rent.df$bathroom)
+summary(rent.df$area)
+
+summary(rent.df)
+
+# Removing any duplicate rows
+
+library(tidyverse)
+rent.df %>% unique()
+str(rent.df)
+
+# Identify any NULL values
+
+sum(is.na(rent.df$price))
+sum(is.na(rent.df$bedroom))
+sum(is.na(rent.df$bathroom))
+sum(is.na(rent.df$area))
+sum(is.na(rent.df$city))
+
+
+#0 null value found
+
+# Identify Outliers and eliminate extreme outliers
+
+hist(rent.df$price, labels = TRUE)
+boxplot(rent.df$price)
+rent.df <- rent.df[which(rent.df$price <= 100000), ]
+hist(rent.df$price, labels = TRUE)
+boxplot(rent.df$price)
+
+hist(rent.df$bedroom, labels = TRUE)
+boxplot(rent.df$bedroom)
+rent.df <- rent.df[which(rent.df$bedroom <= 4), ]
+hist(rent.df$bedroom, labels = TRUE)
+boxplot(rent.df$bedroom)
+
+hist(rent.df$bathroom, labels = TRUE)
+boxplot(rent.df$bathroom)
+rent.df <- rent.df[which(rent.df$bathroom <= 4), ]
+hist(rent.df$bathroom, labels = TRUE)
+boxplot(rent.df$bathroom)
+
+
+hist(rent.df$area, labels = TRUE)
+boxplot(rent.df$area)
+rent.df <- rent.df[which(rent.df$area <= 3000), ]
+hist(rent.df$area, labels = TRUE)
+boxplot(rent.df$area)
+
+dim(rent.df)
+str(rent.df)
+# Check for Linearity between dependent and independent variables
+
+plot(rent.df$bedroom , rent.df$price, pch = 19)
+abline(lm (rent.df$price ~ rent.df$bedroom), col = "red")
+
+plot(rent.df$bathroom , rent.df$price, pch = 19)
+abline(lm (rent.df$price ~ rent.df$bathroom), col = "red")
+
+plot(rent.df$area , rent.df$price, pch = 19)
+abline(lm (rent.df$price ~ rent.df$area), col = "red")
+
+# Check if residual values are normally distributed
+
+mlr_1 <- lm(rent.df$price ~ 
+                   rent.df$bedroom + rent.df$bathroom + rent.df$area +rent.df$city)
+summary(mlr_1)
+
+hist(mlr_1$residuals)
+qqnorm(mlr_1$residuals)
+qqline(mlr_1$residuals, col = "red")
+
+# Check for multicollinearity
+
+correlation_df<-cor(rent.df,method = "spearman", use="pairwise.complete.obs")
+correlation_df
+
+install.packages("ggcorrplot")
+library(ggcorrplot)
+ggcorrplot(correlation_df, hc.order = TRUE, type = "lower", lab = TRUE) 
+
+# Build new model by removing bedroom variable
+
+mlr_2 <- lm(rent.df$price ~ 
+                   rent.df$bathroom + rent.df$area + rent.df$city)
+summary(mlr_2)
+qqnorm(mlr_2$residuals)
+qqline(mlr_2$residuals, col = "red")
+
+# ANOVA - Checking which of the two mlr models are better
+
+summary(mlr_1)
+summary(mlr_2)
+anova(mlr_1, mlr_2)
+
+#as p value less than 0.05, therefore H0 rejected, 
+#hence the removed variable is important, model1 mlr1 is better
+
+#checking multicollinearity using vif
+
+install.packages("car")
+library(car)
+rent.vif <- lm(price ~ bedroom + bathroom + area + city , data = rent.df)
+
+vif(rent.vif)
+
+#here the VIF factor is below 5 for all variables, therefore no multicollinearity seen
+
+# Check for Homoscedasticity
+
+install.packages("ggplot2")
+library(ggplot2)
+
+residual_plot <- ggplot(data = rent.df, aes(x = fitted(mlr_1), y = resid(mlr_1)))     + geom_point() +
+  geom_smooth(method = "loess", se = FALSE, linetype = "dashed") +
+  labs(x = "Fitted Values", y = "Residuals") +
+  ggtitle("Residuals vs Fitted Values") +
+  theme_minimal()
+
+print(residual_plot)
+
+summary(mlr_1)
