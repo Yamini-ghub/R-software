@@ -116,7 +116,11 @@ MLR 1:
 
 The above output for MLR 1 can be described as below:
 Bedroom: if all other factors remain constant and the no. of bedrooms in an apartment increases by one unit then the rental price of the apartment goes up by INR 1759.
+
 Bathroom: if all other factors remain constant and the no. of bathrooms in an apartment increases by one unit then the rental price of the apartment goes up by INR 5036
+
 Area: if all other factors remain constant and the area of the apartment increases by one unit then the rental price of the apartment goes up by INR 12.25.
+
 City: if all other factors remain constant and the city increases by one ( Alphabetically in the sequence of A to Z) then the rental price of the apartment goes up by INR 2219
+
 Adjusted R-squared: the adjusted R-squared is 0.3475 or 34.75%, which implies that 34.75% of the rental price of an apartment can be explained by all the above 4 predictor variables ( no of bedrooms, no of bathrooms, area, city), that is all these 4 variables exert a moderately strong influence on the rental price.
