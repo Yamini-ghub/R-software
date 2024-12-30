@@ -2,13 +2,8 @@
 Descriptive statistics
 After defining the new data frame (Rent.df) descriptive statistics was studied for each of the variables using R studio:
 
-Price	Bedroom	Bathroom	Area
-Min.   :    1200  	Min.   : 1.00 	Min.   : 1.00  	Min.  :    3  
-1st Qu.:  13000  	1st Qu.: 1.00 	1st Qu.: 1.00  	1st Qu.: 650  
-Median :  21000  	Median : 2.00	Median : 2.00	Median : 1000  
-Mean   :  44337  	Mean   : 2.08	Mean   :   2.06 	Mean   : 1265  
-3rd Qu.:  36000  	3rd Qu.: 3.00	3rd Qu.: 3.000  	3rd Qu.: 1440  
-Max. : 5885000  	Max. : 15.00	Max. :  19.00  	Max.   :19800  
+<img width="445" alt="image" src="https://github.com/user-attachments/assets/d8fd874e-49e5-4113-ae47-25a4f7a7ffbb" />
+
 
 4.3 Data Cleaning or Preprocessing
 Data cleaning nearly comprises of handling the following three types of values:
@@ -35,8 +30,10 @@ For the city variable , as it is a categorical variable , it was converted into 
 4.4 Multiple Linear Regression
 a) Assumption check for Linearity
 
-i) Price vs Bedrooms                                                              ii) Price vs Bathrooms
- ![image](https://github.com/user-attachments/assets/b91dbbe7-07af-411d-96cd-7b9ff14bffbb)  ![image](https://github.com/user-attachments/assets/b9b3cc24-707b-48c5-a2bb-2b5de9f299d2)
+i) Price vs Bedrooms  
+![image](https://github.com/user-attachments/assets/b91dbbe7-07af-411d-96cd-7b9ff14bffbb)
+ii) Price vs Bathrooms
+![image](https://github.com/user-attachments/assets/b9b3cc24-707b-48c5-a2bb-2b5de9f299d2)
 
   
 iii) Price vs rent
